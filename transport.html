@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Données</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        h1, h2 {
+            color: #007BFF;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ajouter des Données</h1>
+
+    <form id="dataForm">
+        <label for="type">Type :</label>
+        <select id="type" name="type" required>
+            <option value="" disabled selected>-- Sélectionner un type --</option>
+            <option value="campus">Campus</option>
+            <option value="vehicule">Véhicule</option>
+            <option value="etudiant">Étudiant</option>
+            <option value="chauffeur">Chauffeur</option>
+        </select>
+
+        <div id="dynamicFields"></div>
+
+        <button type="button" onclick="addData()">Ajouter</button>
+        <button type="button" onclick="clearTable()">Réinitialiser le Tableau</button>
+    </form>
+
+    <h2>Tableau des Données</h2>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Données</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les données ajoutées apparaîtront ici -->
+        </tbody>
+    </table>
+
+    <div id="feedbackMessage"></div>
+
+    <script>
+        const typeSelect = document.getElementById('type');
+        const dynamicFields = document.getElementById('dynamicFields');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        typeSelect.addEventListener('change', () => {
+            dynamicFields.innerHTML = '';
+                 if (typeSelect.value === 'campus') {
+                dynamicFields.innerHTML = `
+                    <label for="identifiant">L'identifiant :</label>
+                    <input type="text" id="identifiant" name="identifiant" placeholder="Entrez l'identifiant de campus " required>
+
+                    <label for="adresse">L'adresse :</label>
+                    <input type="text" id="adresse" name="adresse" placeholder="Entrez l'adresse de campus" required>
+                    
+                   <label for="numero">Numéro de téléphone :</label>
+                    <input type="text" id="numero" name="numero" placeholder="Entrez le numéro de téléphone de campus" required>
+                    
+                    <label for="directeur">Directeur pédagogique :</label>
+                    <input type="text" id="directeur" name="directeur" placeholder="Entrez l'identifiant de le directeur pédagogique" required>
+
+
+                  
+                `;
+          
+
+             } else if (typeSelect.value === 'vehicule') {
+                dynamicFields.innerHTML = `
+                    <label for="numero">Numéro d'identification :</label>
+                    <input type="text" id="numero" name="numero" placeholder="Entrez le numéro d'identification" required>
+
+                    <label for="type">Type de véhicule :</label>
+                    <input type="text" id="type" name="type" placeholder="Entrez le type de véhicule (Ex: Bus)" required>
+
+                    <label for="capacity">Nombre maximal de passagers :</label>
+                    <input type="number" id="capacity" name="capacity" placeholder="Entrez la capacité" required>
+                `;
+            } else if (typeSelect.value === 'etudiant') {
+                dynamicFields.innerHTML = `
+                    <label for="name">Nom :</label>
+                    <input type="text" id="name" name="name" placeholder="Entrez le nom" required>
+
+                    <label for="age">Âge :</label>
+                    <input type="number" id="age" name="age" placeholder="Entrez l'âge" required>
+
+                    <label for="campus">Campus :</label>
+                    <input type="text" id="campus" name="campus" placeholder="Entrez le campus" required>
+                    
+                    <label for="itineraire ">L'itinéraire  :</label>
+                    <input type="text" id="itineraire " name="itineraire " placeholder="Entrez l'itinéraire " required>
+                `;
+            } else if (typeSelect.value === 'chauffeur') {
+                dynamicFields.innerHTML = `
+                <label for="IDdriver">L'identifiant :</label>
+                    <input type="text" id="IDdriver" name="IDdriver" placeholder="Entrez l'identifiant de chauffeur" required>
+
+                    <label for="driverName">Nom :</label>
+                    <input type="text" id="driverName" name="driverName" placeholder="Entrez le nom de chauffeur" required>
+
+                    <label for="license">Type de permis :</label>
+                    <input type="text" id="license" name="license" placeholder="Entrez le type de permis" required>
+                    
+                    <label for="tNum">Numéro de téléphone:</label>
+                    <input type="text" id="tNum" name="tNum" placeholder="Entrez le type de permis" required>
+
+
+                    <label for="experience">Années d'expérience :</label>
+                    <input type="number" id="experience" name="experience" placeholder="Entrez l'expérience" required>
+                `;
+            }
+        });
+
+        function addData() {
+            const type = typeSelect.value;
+            const formData = new FormData(document.getElementById('dataForm'));
+
+            if (!type) {
+                displayFeedback('error', 'Veuillez sélectionner un type.');
+                return;
+            }
+
+            const dataEntries = Array.from(formData.entries()).map(([key, value]) => `${key}: ${value}`).join(', ');
+
+            const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+            const newRow = tableBody.insertRow();
+
+            const typeCell = newRow.insertCell(0);
+            const dataCell = newRow.insertCell(1);
+
+            typeCell.textContent = type;
+            dataCell.textContent = dataEntries;
+
+            document.getElementById('dataForm').reset();
+            dynamicFields.innerHTML = '';
+            displayFeedback('success', 'Données ajoutées avec succès!');
+        }
+
+        function clearTable() {
+            const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+            displayFeedback('success', 'Tableau réinitialisé.');
+        }
+
+        function displayFeedback(type, message) {
+            feedbackMessage.textContent = message;
+            feedbackMessage.className = type === 'success' ? 'success-message' : 'error-message';
+        }
+    </script>
+</body>
+</html>
